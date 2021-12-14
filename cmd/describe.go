@@ -10,13 +10,16 @@ import (
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 //TODO: Abstract this to enable description of anything...
+//TODO: Enable the user to specify what fields they want, or default to some...
 
 var describeCmd = &cobra.Command{
 	Use:   "describe",
 	Short: "list field names for the various objects",
+	Run:   customDescribe,
 }
 
 var describeAccountCmd = &cobra.Command{
@@ -46,6 +49,9 @@ func init() {
 	describeCmd.AddCommand(describeContactCmd)
 	describeCmd.AddCommand(describeOpportunityCmd)
 	describeCmd.AddCommand(describeUserCmd)
+
+	describeCmd.Flags().StringP("object", "o", "", "Object to describe")
+	viper.BindPFlag("object", describeCmd.Flags().Lookup("object"))
 }
 
 func accountDescribe(cmd *cobra.Command, args []string) {
@@ -74,6 +80,20 @@ func opportunityDescribe(cmd *cobra.Command, args []string) {
 }
 func userDescribe(cmd *cobra.Command, args []string) {
 	dr, err := app.sc.UserService.Describe(context.Background())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error executing CLI: %s\n", err)
+		os.Exit(1)
+	}
+	printDescription(dr)
+}
+
+func customDescribe(cmd *cobra.Command, args []string) {
+	describeObject := viper.GetString("object")
+	if describeObject == "" {
+		fmt.Fprintln(os.Stderr, "Error executing CLI: you must provide an object type")
+		os.Exit(1)
+	}
+	dr, err := app.sc.Describe(context.Background(), describeObject)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error executing CLI: %s\n", err)
 		os.Exit(1)

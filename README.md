@@ -76,6 +76,7 @@ The following capabilities are currently available with this tool:
 * Opportunities
   * Describe Contacts
   * List Contacts
+* Describe other object types
 
 
 ## Bulk Uploads
@@ -114,3 +115,15 @@ its `idLookup` property is set to `true`.
 
 For example, for an Account, you can use `Owner.Email` because `Owner` is a relationship to a "User" and the "User" 
 `Email` field has its `idLookup` property set to true.  See the [Salesforce](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/relationship_fields_in_a_header_row__2_0.htm) documentation for more detail.
+
+## Describing objects
+
+There are some objects that have their own command, such as account, contact and opportunity.  You can also specify the object type on the command line for objects that don't have their own command. Here are some examples:
+
+```sh
+$ sfcli describe account
+$ sfcli describe contact
+$ sfcli describe opportunity
+$ sfcli describe -o campaign
+$ sfcli describe -o lead
+```

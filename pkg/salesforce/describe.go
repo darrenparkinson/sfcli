@@ -2,6 +2,7 @@ package salesforce
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -166,6 +167,22 @@ func (s *UserService) Describe(ctx context.Context) (*DescribeResponse, error) {
 	}
 	var dr DescribeResponse
 	if err := s.client.makeRequest(ctx, req, &dr); err != nil {
+		return nil, err
+	}
+	return &dr, nil
+}
+
+func (c *Client) Describe(ctx context.Context, object string) (*DescribeResponse, error) {
+	if object == "" {
+		return nil, errors.New("object required for description")
+	}
+	sfurl := fmt.Sprintf("%s/services/data/%s/sobjects/%s/describe", c.BaseURL, c.Version, object)
+	req, err := http.NewRequest("GET", sfurl, nil)
+	if err != nil {
+		return nil, err
+	}
+	var dr DescribeResponse
+	if err := c.makeRequest(ctx, req, &dr); err != nil {
 		return nil, err
 	}
 	return &dr, nil
