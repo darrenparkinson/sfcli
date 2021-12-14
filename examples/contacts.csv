@@ -1,0 +1,4 @@
+FirstName,LastName,Email,Title,Owner.Email,Account.Ext_ClientID__c
+Alice,Smith,asmith@somewhere.com,CAO,integration@example.com,12345
+Bob,Smith,bsmith@somewhere.com,CBO,integration@example.com,123245
+Colin,Smith,csmith@somewhere.com,CCO,integration@example.com,12345
