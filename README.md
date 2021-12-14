@@ -2,8 +2,8 @@
 
 [![Status](https://img.shields.io/badge/status-wip-yellow)](https://github.com/darrenparkinson/sfcli) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/darrenparkinson/sfcli) ![GitHub](https://img.shields.io/github/license/darrenparkinson/sfcli?color=brightgreen) [![GoDoc](https://pkg.go.dev/badge/darrenparkinson/sfcli)](https://pkg.go.dev/github.com/darrenparkinson/sfcli) [![Go Report Card](https://goreportcard.com/badge/github.com/darrenparkinson/sfcli)](https://goreportcard.com/report/github.com/darrenparkinson/sfcli)
 
-A simple utility, written in Go, for interacting with Salesforce.  Currently only specific functionality is implemented, and the output is define however
-it can be easily extended to add further capabilities.
+A simple utility, written in Go, for interacting with Salesforce.  Currently only specific functionality is implemented, 
+and the output is defined by current requirements, however it can be easily extended to add further capabilities.
 
 There is already a [Salesforce CLI available on the Salesforce website](https://developer.salesforce.com/tools/sfdxcli#), but that doesn't currently support the V2 Bulk API.
 
