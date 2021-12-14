@@ -36,6 +36,14 @@ type Client struct {
 
 	// BulkService represents the Bulk 2.0 API
 	BulkService *BulkService
+	// AccountService represents the Account object
+	AccountService *AccountService
+	// ContactService represents the Contact object
+	ContactService *ContactService
+	// OpportunityService represents the Opportunity object
+	OpportunityService *OpportunityService
+	// UserService represents the User object
+	UserService *UserService
 
 	username string
 	password string
@@ -47,6 +55,26 @@ type Client struct {
 
 // BulkService represents the Bulk Service 2.0 API
 type BulkService struct {
+	client *Client
+}
+
+// AccountService represents the Account object
+type AccountService struct {
+	client *Client
+}
+
+// ContactService represents the Contact object
+type ContactService struct {
+	client *Client
+}
+
+// OpportunityService represents the Opportunity object
+type OpportunityService struct {
+	client *Client
+}
+
+// UserService represents the User object
+type UserService struct {
 	client *Client
 }
 
@@ -74,6 +102,10 @@ func NewClient(baseURL, username, password, clientID, secret string, client *htt
 		lim:        rl,
 	}
 	c.BulkService = &BulkService{client: c}
+	c.AccountService = &AccountService{client: c}
+	c.ContactService = &ContactService{client: c}
+	c.OpportunityService = &OpportunityService{client: c}
+	c.UserService = &UserService{client: c}
 	return c, nil
 }
 

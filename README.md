@@ -31,7 +31,7 @@ USERNAME: me@mycompany.com
 BASEURL: https://mycompany--uat.my.salesforce.com
 ```
 
-You can have different files for different environments and specify which to use with the `--config` option, e.g. `sfcli --config .sfcli.dev`
+You can have different files for different environments and specify which to use with the `--config` option, e.g. `sfcli --config .sfcli.dev.yaml`
 
 For full command help simply use:
 
