@@ -1,6 +1,9 @@
 .env*
 .sfcli*
-
+error*.csv
+success*.csv
+products.csv
+product_mapping.sdl
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,vim,visualstudiocode,linux,go
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,vim,visualstudiocode,linux,go

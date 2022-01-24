@@ -166,3 +166,37 @@ func (s *BulkService) ProcessJob(ctx context.Context, jobType BulkType, id strin
 	}
 	return &job, nil
 }
+
+//GetSuccessfulResults will check the specified job id for errors
+func (s *BulkService) GetSuccessfulResults(ctx context.Context, jobType BulkType, id string) (string, error) {
+	sfurl := fmt.Sprintf("%s/services/data/%s/jobs/%s/%s/successfulResults", s.client.BaseURL, s.client.Version, jobType, id)
+	req, err := http.NewRequest("GET", sfurl, nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Accept", "text/csv")
+	var res string
+	if err := s.client.makeRequest(ctx, req, &res); err != nil {
+		return "", err
+	}
+	//TODO: Maybe check the job first to see what object type was inserted
+	// and return a typed object instead?
+	return res, nil
+}
+
+//GetFailedResults will check the specified job id for errors
+func (s *BulkService) GetFailedResults(ctx context.Context, jobType BulkType, id string) (string, error) {
+	sfurl := fmt.Sprintf("%s/services/data/%s/jobs/%s/%s/failedResults", s.client.BaseURL, s.client.Version, jobType, id)
+	req, err := http.NewRequest("GET", sfurl, nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Accept", "text/csv")
+	var res string
+	if err := s.client.makeRequest(ctx, req, &res); err != nil {
+		return "", err
+	}
+	//TODO: Maybe check the job first to see what object type was inserted
+	// and return a typed object instead?
+	return res, nil
+}

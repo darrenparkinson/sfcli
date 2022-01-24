@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -136,7 +137,9 @@ func (c *Client) makeRequest(ctx context.Context, req *http.Request, v interface
 		return fmt.Errorf("error getting token: %w", err)
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token.AccessToken))
-	req.Header.Set("Accept", "application/json")
+	if req.Header.Get("Accept") == "" {
+		req.Header.Set("Accept", "application/json")
+	}
 	if req.Header.Get("Content-Type") == "" {
 		req.Header.Set("Content-Type", "application/json")
 	}
@@ -200,8 +203,19 @@ func (c *Client) makeRequest(ctx context.Context, req *http.Request, v interface
 		return nil
 	}
 
-	if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
-		return err
+	if req.Header.Get("Accept") == "application/json" {
+		if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
+			return err
+		}
+	}
+	if req.Header.Get("Accept") == "text/csv" {
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+		if p, ok := v.(*string); ok {
+			*p = string(body)
+		}
 	}
 
 	return nil

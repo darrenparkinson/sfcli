@@ -5,7 +5,29 @@
 A simple utility, written in Go, for interacting with Salesforce.  Currently only specific functionality is implemented, 
 and the output is defined by current requirements, however it can be easily extended to add further capabilities.
 
-There is already a [Salesforce CLI available on the Salesforce website](https://developer.salesforce.com/tools/sfdxcli#), but that doesn't currently support the V2 Bulk API.
+There is already a [Salesforce CLI available on the Salesforce website](https://developer.salesforce.com/tools/sfdxcli#), but that doesn't currently support the V2 Bulk API. 
+
+However, by way of an example, you can use the Salesforce CLI for v1 bulk upserts as follows:
+
+```sh
+$ sfdx auth:web
+$ sfdx force:data:bulk:upsert -i Email -f ./examples/contacts.csv -s contact -u you@yourcompany.com -w 1
+```
+
+And you can use the existing Salesforce CLI to describe objects as follows:
+
+```sh
+sfdx force:schema:sobject:describe -s Account -u you@yourcompany.com
+```
+
+Which you could then pipe to `jq` to obtain the fields you want:
+
+```sh
+$ # To see how many fields:
+$ sfdx force:schema:sobject:describe -s Account -u you@yourcompany.com | jq '.fields | length'
+$ # To list specific fields you could do something like:
+$ sfdx force:schema:sobject:describe -s Account -u you@yourcompany.com | jq -r '["Name","IDLookup"], (.fields[] | [.name, .idLookup]) | @tsv' | column -t
+```
 
 ## Authentication
 
