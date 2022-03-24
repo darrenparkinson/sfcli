@@ -66,12 +66,9 @@ Usage:
   sfcli [command]
 
 Available Commands:
-  accounts      account related commands
-  bulk          bulk API V2 Commands
-  completion    generate the autocompletion script for the specified shell
-  contacts      contact related commands
-  help          Help about any command
-  opportunities opportunity related commands
+  bulk        Bulk API V2 Commands
+  describe    list field names for the various objects
+  help        Help about any command
 
 Flags:
       --config string   config file (default is $HOME/.sfcli.yaml)
@@ -89,16 +86,11 @@ The following capabilities are currently available with this tool:
   * Show Bulk Upload Job Status
   * Create a Bulk Insert Job
   * Create a Bulk Upsert Job
-* Accounts
-  * Describe Accounts (show account fields)
-  * List Accounts
-* Contacts
-  * Describe Contacts
-  * List Contacts
-* Opportunities
-  * Describe Contacts
-  * List Contacts
-* Describe other object types
+* Describe (show object fields)
+  * Account 
+  * Contact
+  * Opportunity
+* Describe other object types with `-o` option
 
 
 ## Bulk Uploads
@@ -121,16 +113,17 @@ Usage:
   sfcli bulk upsert [flags]
 
 Flags:
+  -c, --crlf              Specify CRLF Line Ending (default is LF)
   -e, --external string   External ID Field
   -f, --file string       CSV File
   -h, --help              help for upsert
-  -o, --object string     Type of Object for Insert, e.g. Account, Contact, Opportunity
+  -s, --sobject string     Type of SObject for Insert, e.g. Account, Contact, Opportunity
 ```
 
 ### CSV Format
 
 Use the correct column names as headers in the CSV.  These can be obtained from the "describe" endpoint for each object type.  
-This CLI provides a `describe` command for some objects.
+This CLI provides a `describe` command for objects (see below).
 
 You can use relationship fields in the CSV so long as the `External ID` field is selected or, if it's a standard field,
 its `idLookup` property is set to `true`.

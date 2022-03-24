@@ -19,12 +19,14 @@ var bulkInsertCmd = &cobra.Command{
 func init() {
 	bulkCmd.AddCommand(bulkInsertCmd)
 
-	bulkInsertCmd.Flags().StringP("file", "f", "", "CSV File")
+	bulkInsertCmd.Flags().StringVarP(&file, "file", "f", "", "CSV File")
 	viper.BindPFlag("file", bulkInsertCmd.Flags().Lookup("file"))
 
-	bulkInsertCmd.Flags().StringP("object", "o", "", "Type of Object for Insert, e.g. Account, Contact, Opportunity")
-	viper.BindPFlag("object", bulkInsertCmd.Flags().Lookup("object"))
+	bulkInsertCmd.Flags().StringVarP(&sobject, "sobject", "s", "", "Type of Object for Insert, e.g. Account, Contact, Opportunity")
+	viper.BindPFlag("sobject", bulkInsertCmd.Flags().Lookup("sobject"))
 
+	bulkInsertCmd.Flags().BoolVarP(&crlfLineEnding, "crlf", "c", false, "Specify CRLF Line Ending (default is LF)")
+	viper.BindPFlag("crlf", bulkInsertCmd.Flags().Lookup("crlf"))
 }
 
 func bulkInsert(cmd *cobra.Command, args []string) {
@@ -34,11 +36,13 @@ func bulkInsert(cmd *cobra.Command, args []string) {
 		fmt.Fprintln(os.Stderr, "Error executing CLI: file is required")
 		os.Exit(1)
 	}
-	object := viper.GetString("object")
+	object := viper.GetString("sobject")
 	if object == "" {
 		fmt.Fprintln(os.Stderr, "Error executing CLI: object type is required")
 		os.Exit(1)
 	}
+
+	crlf := viper.GetBool("crlf")
 
 	// check file exists
 	file, err := os.Open(filename)
@@ -53,6 +57,9 @@ func bulkInsert(cmd *cobra.Command, args []string) {
 		Object:      object,
 		ContentType: "CSV", // TODO: Make this a parameter?
 		Operation:   "insert",
+	}
+	if crlf {
+		br.LineEnding = "CRLF"
 	}
 	job, err := app.sc.BulkService.CreateJob(context.Background(), br)
 	if err != nil {

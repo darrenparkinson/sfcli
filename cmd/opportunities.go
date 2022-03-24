@@ -10,5 +10,5 @@ var opportunitiesCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(opportunitiesCmd)
+	// rootCmd.AddCommand(opportunitiesCmd)
 }

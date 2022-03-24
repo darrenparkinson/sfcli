@@ -11,5 +11,5 @@ var accountsCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(accountsCmd)
+	// rootCmd.AddCommand(accountsCmd)
 }
