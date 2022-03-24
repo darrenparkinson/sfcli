@@ -1,0 +1,17 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - id: "sfcli"
+    main: ./
+    binary: sfcli
+    goos:
+      - darwin
+      - linux
+      - windows
+archives:
+  - format: binary
+changelog:
+  sort: asc
+checksum:
+  disable: true

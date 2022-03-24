@@ -4,6 +4,7 @@ error*.csv
 success*.csv
 products.csv
 product_mapping.sdl
+dist/
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,vim,visualstudiocode,linux,go
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,vim,visualstudiocode,linux,go
