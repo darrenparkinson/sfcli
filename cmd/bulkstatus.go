@@ -36,8 +36,12 @@ func init() {
 
 	bulkStatusCmd.Flags().StringP("id", "i", "", "Job ID")
 	viper.BindPFlag("bulkStatusID", bulkStatusCmd.Flags().Lookup("id"))
+	bulkStatusCmd.Flags().Int64VarP(&refreshTimer, "refresh", "r", 0, "Refresh timer in seconds, when set will check for status updates")
+	viper.BindPFlag("refresh", bulkStatusCmd.Flags().Lookup("refresh"))
+
 	bulkSuccessResultsCmd.Flags().StringP("id", "i", "", "Job ID")
 	viper.BindPFlag("bulkSuccessID", bulkSuccessResultsCmd.Flags().Lookup("id"))
+
 	bulkErrorResultsCmd.Flags().StringP("id", "i", "", "Job ID")
 	viper.BindPFlag("bulkErrorID", bulkErrorResultsCmd.Flags().Lookup("id"))
 
@@ -83,6 +87,10 @@ func bulkStatus(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	printJobStatus(bs)
+
+	// check for status updates if a refresh timer is specified
+	app.continuouslyUpdateStatusOrExit(id, bs.State)
+
 }
 
 func printJobStatus(job *salesforce.JobInfo) {

@@ -27,6 +27,9 @@ func init() {
 
 	bulkInsertCmd.Flags().BoolVarP(&crlfLineEnding, "crlf", "c", false, "Specify CRLF Line Ending (default is LF)")
 	viper.BindPFlag("crlf", bulkInsertCmd.Flags().Lookup("crlf"))
+
+	bulkInsertCmd.Flags().Int64VarP(&refreshTimer, "refresh", "r", 0, "Refresh timer in seconds, when set will check for status updates")
+	viper.BindPFlag("refresh", bulkInsertCmd.Flags().Lookup("refresh"))
 }
 
 func bulkInsert(cmd *cobra.Command, args []string) {
@@ -83,5 +86,8 @@ func bulkInsert(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	fmt.Printf("Job: %s; Status: %s\n", res.ID, res.State)
+
+	// check for status updates if a refresh timer is specified
+	app.continuouslyUpdateStatusOrExit(job.ID, res.State)
 
 }
